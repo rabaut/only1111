@@ -1,0 +1,45 @@
+/* Copyright (c) 2012, the Dart project authors.  Please see the AUTHORS file */
+/* for details. All rights reserved. Use of this source code is governed by a */
+/* BSD-style license that can be found in the LICENSE file. */
+
+body {
+  background-color: black;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10px;
+  font-weight: normal;
+  line-height: 1.2em;
+}
+
+h1 {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 40px;
+  text-align: center;
+}
+
+#container {
+  width: 800px;
+  height: 550px;
+  text-align: center;
+  background-color: black;
+  margin: 0 auto;
+}
+
+canvas {
+  margin: 0 auto;
+  display: inline;
+}
+
+#remaining {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+
+#timeleft {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
