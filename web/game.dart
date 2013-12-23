@@ -177,7 +177,7 @@ class Game {
           map[playerX][y] = EMPTY;
         }
       }
-      if(value != 1) {
+      if(count != 0) {
         map[playerX][playerY-count] = value; 
         symbolsRem = symbolsRem.replaceAll(value.toRadixString(16).toUpperCase(), ' ');
       }
@@ -193,7 +193,7 @@ class Game {
           map[x][playerY] = EMPTY;
         }
       }
-      if(value != 1) {
+      if(count != 0) {
         map[playerX-count][playerY] = value; 
         symbolsRem = symbolsRem.replaceAll(value.toRadixString(16).toUpperCase(), ' ');
       }
@@ -209,7 +209,7 @@ class Game {
           map[playerX][y] = EMPTY;
         }
       }
-      if(value != 8) {
+      if(count != 0) {
         map[playerX][playerY+count] = value; 
         symbolsRem = symbolsRem.replaceAll(value.toRadixString(16).toUpperCase(), ' ');
       }
@@ -225,7 +225,7 @@ class Game {
           map[x][playerY] = EMPTY;
         }
       }
-      if(value != 8) {
+      if(count != 0) {
         map[playerX+count][playerY] = value;
         symbolsRem = symbolsRem.replaceAll(value.toRadixString(16).toUpperCase(), ' ');
       }
