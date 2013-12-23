@@ -4,6 +4,8 @@ import 'dart:math';
 class Game {
   final CanvasRenderingContext2D context =
       (querySelector("#canvas") as CanvasElement).context2D;
+  ImageElement image = new ImageElement(src:"../assets/mainMenu.png");
+  
   List<List<int>> map;
   List<String> colors;
  
@@ -26,13 +28,14 @@ class Game {
   
   // Symbols that need to be found
   String symbolsRem = "2 3 4 5 6 7 8 9 A B C D E F";
-  var timeRemaining;
+  double timeRemaining;
+  Stopwatch timer;
   
   int gameState;
   
   Game() {
     rand = new Random();
-    gameState = PLAY;
+    gameState = MENU;
     
     map = [];
     map.length = 80;
@@ -46,19 +49,20 @@ class Game {
   
   void update(num delta) {
     if(gameState == PLAY) {
-      var deltaSecs = delta * .001;
-      timeRemaining = 60 - deltaSecs;
-//      if(timeRemaining <= 0) {
-//        timeRemaining = 0;
-//        gameState = OVER;
-//      }
-      if(deltaSecs % 15 == 0) {
-        window.onKeyDown.listen(onKeyDown);
+      timeRemaining = 60 - (timer.elapsedMilliseconds * .001);
+      if(timeRemaining <= 0) {
+        timeRemaining = 0.0;
+        gameState = OVER;
       }
+      window.onKeyPress.listen(onKeyDown);
       context.clearRect(0,0,800,550);
       drawMap(map,colors);
     }
     else if(gameState == MENU) {
+      querySelector('#canvas').onClick.listen((e) { 
+        gameState = PLAY;
+        timer = new Stopwatch()..start();
+      });
       drawMenu();
     }
     else if(gameState == OVER) {
@@ -68,7 +72,7 @@ class Game {
   }
   
   void drawMenu() {
-    
+    context..drawImage(image, 0, 0);
   }
 
   void drawMap(List<List<int>> map, List<String> colors) {
@@ -96,7 +100,7 @@ class Game {
     var q = querySelector("#remaining");
     q.innerHtml = "Symbols Remaining: " + symbolsRem;
     q = querySelector("#timeleft");
-    q.innerHtml = "Time Remaining: " + timeRemaining.toInt().toString();
+    q.innerHtml = "Time Remaining: " + timeRemaining.round().toString();
     context..stroke();
   }
   
@@ -244,7 +248,7 @@ class Game {
     for(int x = 0; x < map.length; x++ ) {
       for(int y = 0; y < map[x].length; y++ ) {
         // Create the border on the edge
-        if(x == 0 || y == 0 || x == map.length-1 || y == map[x].length-1) {
+        if(x == 0 || y == 1 || x == map.length-1 || y == map[x].length-1) {
           map[x][y] = BORDER;
         }
         // Else, randomly fill with spaces
@@ -270,16 +274,16 @@ class Game {
 
   void makeNodes(List<List<int>> map) {
       // Top Left Node
-      map[3][3] = NODE;
       map[3][4] = NODE;
-      map[4][3] = NODE;
+      map[3][5] = NODE;
       map[4][4] = NODE;
+      map[4][5] = NODE;
       
       // Top Right Node
-      map[map.length-4][3] = NODE;
       map[map.length-4][4] = NODE;
-      map[map.length-5][3] = NODE;
+      map[map.length-4][5] = NODE;
       map[map.length-5][4] = NODE;
+      map[map.length-5][5] = NODE;
       
       // Bottom Left Node
       map[3][map[0].length-4] = NODE;
