@@ -29,6 +29,7 @@ class Game {
   // Symbols that need to be found
   String symbolsRem = "2 3 4 5 6 7 8 9 A B C D E F";
   double timeRemaining;
+  double lastUpdate = 0.0;
   Stopwatch timer;
   
   int gameState;
@@ -54,7 +55,10 @@ class Game {
         timeRemaining = 0.0;
         gameState = OVER;
       }
-      window.onKeyPress.listen(onKeyDown);
+      if(lastUpdate == 0 || delta - lastUpdate > 100000) { 
+        lastUpdate = delta;
+        window.onKeyDown.listen(onKeyDown);
+      }
       context.clearRect(0,0,800,550);
       drawMap(map,colors);
     }
