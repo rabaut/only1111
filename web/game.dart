@@ -27,9 +27,9 @@ class Game {
   var rand;
   
   // Symbols that need to be found
-  String symbolsRem = "2 3 4 5 6 7 8 9 A B C D E F";
+  String symbolsRem;
   double timeRemaining;
-  double lastUpdate = 0.0;
+  double lastUpdate;
   Stopwatch timer;
   
   int gameState;
@@ -43,12 +43,10 @@ class Game {
     
     colors = [];
     colors.length = 16;
-    
-    makeMap(map);
-    makeColors(colors);
   }
   
   void update(num delta) {
+    context.clearRect(0,0,800,550);
     if(gameState == PLAY) {
       timeRemaining = 60 - (timer.elapsedMilliseconds * .001);
       if(timeRemaining <= 0) {
@@ -59,18 +57,19 @@ class Game {
         lastUpdate = delta;
         window.onKeyDown.listen(onKeyDown);
       }
-      context.clearRect(0,0,800,550);
       drawMap(map,colors);
     }
     else if(gameState == MENU) {
       querySelector('#canvas').onClick.listen((e) { 
-        gameState = PLAY;
-        timer = new Stopwatch()..start();
+        start();
       });
       drawMenu();
     }
     else if(gameState == OVER) {
       drawGameOver();
+      querySelector('#canvas').onClick.listen((e) { 
+        start();
+      });
     }
     window.animationFrame.then(update);
   }
@@ -109,12 +108,27 @@ class Game {
   }
   
   void drawGameOver() {
-    
+    context..fillStyle = randomColor();
+    context..font = "70px sans-serif";
+    context..fillText("GAME OVER", 180, 200);
+    context..font = "30px sans-serif";
+    context..fillStyle = 'white';
+    context..fillText('Click to restart', 300, 300);
+    context..font = '10px sans-serif';
   }
 
   void onKeyDown(KeyboardEvent args) {
     move(args.keyCode);
     patternCheck(args.keyCode);
+  }
+  
+  void start() {
+    gameState = PLAY;
+    makeMap(map);
+    makeColors(colors);
+    timer = new Stopwatch()..start();
+    symbolsRem = "2 3 4 5 6 7 8 9 A B C D E F";
+    lastUpdate = 0.0;
   }
   
   void move(int key) {
